@@ -84,3 +84,8 @@ Produce another QC dataset "extra1" that constitutes all SNPs in Chr 16 with pos
 
 ## Day 2 - GWAS using PLINK2
 In this session, we will examine the association between high-density lipoprotein (HDL) levels and SNPs in the genotype data. For each SNP in the genotype data, we will run linear regression with HDL levels as the outcome/phenotype/dependent variable and SNP as the exposure/independent variable. The slope (beta) of the regression line represents the change in HDL levels for each additional allele, with the assumption of additive genetic effect.
+![Genetic effect linearly associated with HDL](https://github.com/YADengUU/Data_Lab_2025/blob/main/images/additive_effect_illus.png)
+For the sake of time, we would restrict the association tests to Chr 16 of our genotyped markers. Therefore, the exercise is not literally "genome-wide" (which usually covers all autosomal chromosomes and sometimes also the sex chromosomes).
+
+#### Phenotype and covariates
+The phenotypes and covariates are usually written in a separate file(s) that are in tab- or space-separated format. It is okay to have both in one text-file as along as there's matching FIDs, IIDs for the corresponding data values. For clarity, here they are contained in the two files - `epihealth_hdl.pheno` and `epihealth_pcs.covar`. Although the suffices make them unable to directly be opened, you can view them easily in any text-editors or simply with the command lines learnt in the previous session.
