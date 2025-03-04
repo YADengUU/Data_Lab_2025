@@ -56,7 +56,7 @@ How many individuals and SNPs are contained in the epihealth dataset?
 
 > Counting the number of lines in .pvar and .psam files may seem like a quick way to determine the number of variants and individuals, but it is **not always the best choice** because header lines can mislead the count and .pgen may contain different numbers of variants or sample. Although .pvar lists all variants, some might have been **excluded** in the .pgen file due to filtering, missingness or quality control; .psam lists all samples, ut some may be **excluded** if the .pgen file was created wit a subset of individuals. Hence, the number of valid variants and samples may be fewer than what were listed in the .pvar and .psam.
 
-> Instead, PLINK2 can provide the correct counts such as by running any commands like: `plink2 --pfile your-file --freq --out summary`. Its output should include something like "...samples loaded from ... ...variants loaded from ...", which is accuract and accounts for active data.
+> Instead, PLINK2 can provide the correct counts such as by running any commands like: `plink2 --pfile your-file --freq --out summary`. Its output should include something like "...samples loaded from ... ...variants loaded from ...", which is accurate and accounts for active data.
 
 #### Question 6:
 With the filtering criteria for SNP missing call rates>1%, how many SNPs should be excluded?
@@ -83,3 +83,4 @@ In the output log, how many SNPs are left in the QC-ed data?
 Produce another QC dataset "extra1" that constitutes all SNPs in Chr 16 with positions between 250,000 bp and 300,000 bp, recode (export) them as 0,1,2. Use only data from individuals with missing call rate<5%. Load the recoded dataset in R or download them to local computers and open with Excel, calculate the MAF for some SNPs and check the correctness by PLINK2 command `--freq`.
 
 ## Day 2 - GWAS using PLINK2
+In this session, we will examine the association between high-density lipoprotein (HDL) levels and SNPs in the genotype data. For each SNP in the genotype data, we will run linear regression with HDL levels as the outcome/phenotype/dependent variable and SNP as the exposure/independent variable. The slope (beta) of the regression line represents the change in HDL levels for each additional allele, with the assumption of additive genetic effect.
