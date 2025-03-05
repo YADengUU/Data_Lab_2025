@@ -113,10 +113,12 @@ Check [here](https://www.cog-genomics.org/plink/2.0/assoc#glm) for more options 
 
 #### Question 2
 Read the output log, either directly in the interactive window or the corresponding .log file.
+
 *How many individuals have available phenotype values? What extension has been added to the GWAS output by PLINK2?*
 
 #### Question 3
 Check the association test results with Linux command `head`.  You may refer to [this page](https://www.cog-genomics.org/plink/2.0/formats#glm_logistic) for details about each column. In real GWAS analyses, the size of the output can be gigantic, thus loading it locally is not the ideal option. Instead, use `awk` for a quick overview.
+
 *Which column do you look at to select significant SNPs? A common significance cutoff is 5e-8. How do you write the `awk` command to quickly check if there are significant SNPs? Which SNP(s), if any, do you find significant? What is/are its/their effect size?*
 
 ### Visualizing results
