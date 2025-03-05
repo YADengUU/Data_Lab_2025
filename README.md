@@ -260,7 +260,7 @@ For this session, run the following to make your shortcut of the location of dat
 ```
 meta_loc="/crex/proj/uppmax2024-2-1/DATA_LAB/meta"
 ls ${meta_loc}
-``
+```
 
 There is a file called `metal_script.txt`, which is created to ensure our progress in this session:
 
