@@ -238,3 +238,19 @@ Within a locus, there may be several independent association signals, which can 
 *Show the command you used to re-run the test. Based on the position of the lead SNP, what is the range of positions ± 500kb around it? Is there any additional association signal in this region? A p-value cutoff of 1e-5 can be used for secondary signal in this example.*
 
 ## Day 3 - Meta-analysis
+The effect size of SNPs associated with complex traits is typically very small, so the statistical power to detect a true association between an outcome and a SNP using GWAS is relatively low with data from a single study with a few thousand participants. To overcome this limitation, it is a common practice to combine GWAS results from multiple studies as a meta-analysis, which increases the sample size and improves the statistical power to find true associations.
+
+In this session, we will combine association results from two studies in a fixed-effect, inverse variance weighted (IVW) meta-analysis. We will use the software [METAL](https://genome.sph.umich.edu/wiki/METAL_Documentation). Similar to PLINK2 and R packages, METAL can be loaded in Rackham by
+```
+module load bioinfo-tools METAL
+```
+
+With "fixed effects", we are assuming that the different studies included in this meta-analysis represent the same population, and the effect estimates vary little between the studies. If the effect sizes vary a lot between studies, i.e., heterogeneity, the fixed-effects assumption might be violated and a random effects model would be more appropriate. METAL supports the fixed-effect model.
+
+In an IVW meta-analysis, we combine results across studies using the effect size (BETA) and standard error (SE).
+
+Once the meta-analysis is performed, we will also use the qqman R package to visualize the genome-wide results in a Manhattan plot and [LocusZoom](https://my.locuszoom.org/) to investigate a relavant region.
+
+**<ins>Creating a meta-analysis script for METAL</ins>**
+
+In order to run a meta-analysis, we need a METAL script file in plaintext with the following layout:
