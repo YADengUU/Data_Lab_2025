@@ -140,7 +140,7 @@ Use `dim(results_chr16)` to check the dimension (number of rows and columns) of 
 #### Question 4
 *What are the dimensions of the output dataframe? Do you have the same number of rows as the number of SNPs left in your QC-ed dataset?*
 
-*<ins>QQ plot</ins>*
+**<ins>QQ plot</ins>**
 The quantile-quantile (QQ) plot is used to visualize the observed p-values vs the expected p-values.See page 36-38 in a [GWAS tutorial by Cornell University](https://physiology.med.cornell.edu/people/banfelder/qbio/resources_2013/2013_1_Mezey.pdf) for how an ideal QQ plot should look like. With qqman R package, you can quickly create QQ plots, which for GWAS is usually in -log10 scale:
 ```R
 png(file="qq-plot.png", width=85, height=85, units="mm", res=300)
@@ -157,7 +157,8 @@ Then, you can use `sftp`, the secure file transfer protocol, to get the image fr
 #### Question 5
 *Upload your plot to the report. Do you observe general inflation in the QQ plot?*
 
-*<ins>Manhattan plot</ins>*
+**<ins>Manhattan plot</ins>**
+
 In the Manhattan plot, the -log10 of the p-values are shown against the chromosomal position of SNPs. Each peak above the threshold (p=5e-8) represents a significantly associated locus.
 ```R
 significant_snp <- "the snp ID of the significant SNP you found"
@@ -169,7 +170,8 @@ dev.off()
 #### Question 6
 *Upload your plot to the report. Do you see the highighted significant SNP?*
 
-*<ins>Regional plot</ins>*
+**<ins>Regional plot</ins>**
+
 A Manhattan plot can give a nice global overview of the results, but it doesn't provide information about individual loci and association signals. To dive a little deeper into the association that reaches genome-wide significance in our study, we can generate a regional plot. For convenience, we will use an online tool. Before quitting R, we would sort the results by CHR and BP and save it as a .txt file, which will be used as input for the regional plot.
 ```R
 sorted_result <- results_chr16[order(results_chr16$X.CHROM, results_chr16$POS), ]
@@ -197,7 +199,8 @@ When it is completed, you will receive an email notifaction and get an interacti
 #### Question 8
 *Click "Save PNG" and upload your regional plot to the report.*
 
-*<ins>Investigate the most significantly associated SNP</ins>*
+**<ins>Investigate the most significantly associated SNP</ins>**
+
 Inside the regional plot, move your mouse (pointer) to the significant SNP, then click and choose "see hits in GWAS catalog". This should open a new tab in GWAS Catalog then select the matching variant ID.
 
 #### Question 9
