@@ -256,11 +256,14 @@ Once the meta-analysis is performed, we will also use the qqman R package to vis
 In order to run a meta-analysis, we need a METAL script file. METAL scripts are **simple text-based commands** that specify how to process GWAS summary statistics. They are **configuration files** for meta-analysis.
 
 For this session, run the following to make your shortcut of the location of data:
+
 ```
 meta_loc="/crex/proj/uppmax2024-2-1/DATA_LAB/meta"
 ls ${meta_loc}
 ``
+
 There is a file called `metal_script.txt`, which is created to ensure our progress in this session:
+
 ```
 # output file
 OUTFILE out/meta_hdl .tbl
@@ -294,6 +297,7 @@ PROCESSFILE study2_assoc_results.txt
 ANALYZE HETEROGENEITY
 CLEAR
 ```
+
 Copy it to your working folder by `cp ${meta_loc}/metal_script.txt .` and open the text-editor `nano metal_script.txt` to edit the following parts:
 + OUTFILE: change the output file prefix to either a new directory in your current one or remove "out/"
 + the two PROCESSFILE: add `/crex/proj/uppmax2024-2-1/DATA_LAB/meta/` to make them the correct paths
