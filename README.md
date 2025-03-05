@@ -2,6 +2,7 @@
 There are 3 sessions of this data lab, jump to:
 - [Day 1](#day-1--introduction-to-plink-and-basic-qc)
 - [Day 2](#day-2---gwas-using-plink2)
+- [Day 3](#day-3---meta-analysis)
 ## Day 1- Introduction to PLINK and basic QC
 Log into your UPPMAX Rackham account. The datasets for the lab are in the following directory on Rackham:
 `/crex/proj/uppmax2024-2-1/DATA_LAB/data`.
@@ -141,6 +142,7 @@ Use `dim(results_chr16)` to check the dimension (number of rows and columns) of 
 *What are the dimensions of the output dataframe? Do you have the same number of rows as the number of SNPs left in your QC-ed dataset?*
 
 **<ins>QQ plot</ins>**
+
 The quantile-quantile (QQ) plot is used to visualize the observed p-values vs the expected p-values.See page 36-38 in a [GWAS tutorial by Cornell University](https://physiology.med.cornell.edu/people/banfelder/qbio/resources_2013/2013_1_Mezey.pdf) for how an ideal QQ plot should look like. With qqman R package, you can quickly create QQ plots, which for GWAS is usually in -log10 scale:
 ```R
 png(file="qq-plot.png", width=85, height=85, units="mm", res=300)
@@ -216,4 +218,23 @@ Return to your tab in GWAS Catalog, check the "Mapped gene" under the "Associati
 #### Question 11
 *What protein does the gene encode? Does it sound like a plausible candidate gene for HDL levels?*
 
-For further investigation, we can explore what has been reported for the lead SNP and nearest genes using the [Common metabolic disease knowledge portal](https://hugeamp.org/).
+For further investigation, we can explore what has been reported for the lead SNP and nearest genes using the [Common Metabolic Disease Knowledge Portal](https://hugeamp.org/). By entering the lead SNP ID, you should see a PheWAS (phenome-wide association study) plot that shows the -log10 of the p-value for associations of any trait with your SNP in all available data. In addition, searching with the gene gives the possibility to look at PheWAS results based on common or rare variant associations separately.
+
+#### Question 12
+*Are the traits for the nearest downstream gene as highlighted in the PheWAS the same for common and rare variants?*
+
+> Most, or almost all, associated signals identified in GWAS for complex traits in humans are located in non-coding regions of the genome. Hence, it should be noted that it is typically not obvious if/how the gene nearest to a lead SNP is relevant for the trait of interest. Sometimes the lead SNP is located near many genes that without further information could all drive the identified association. In the next module (Epigenomics) of the course, we will discuss more about how we can functionally annoate an associated region of the genome. Sometimes the nearest genes have not yet been functionally characterized for any trait and our biological knowledge may be a limiting factor.
+
+**<ins>Check the allele frequencies of the SNPs</ins>**
+
+Recall the PLINK2 command that you used to run association test, in `cols=...` we have chosen to show the A1 frequency, which is not necesarily the reference allele but the allele under test or the effect allele. When reporting GWAS summary statistics, it is also a common practice to include the effect allele and the frequency.
+
+#### Question 13
+*Check in R or simply from the text-file, is A1 of the investigated SNP the reference or alternative allele? What is it and its frequency?*
+
+#### Extra exercise - Conditional analysis
+Within a locus, there may be several independent association signals, which can be identified by conditioning the association analysis for the lead SNP in the locus. Re-run the association analysis adjusting for the lead SNP by adding the `--condition` flag. See the [documentation of PLINK2's association tests](https://www.cog-genomics.org/plink/2.0/assoc#glm) for more details.
+
+*Show the command you used to re-run the test. Based on the position of the lead SNP, what is the range of positions ± 500kb around it? Is there any additional association signal in this region? A p-value cutoff of 1e-5 can be used for secondary signal in this example.*
+
+## Day 3 - Meta-analysis
