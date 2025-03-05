@@ -92,7 +92,7 @@ For the sake of time, we will restrict the association tests to Chr 16 of our ge
 ### Phenotype and covariates
 The phenotypes and covariates are usually written in a separate file(s) that are in tab- or space-separated format. It is okay to have both in one text-file as along as there's matching FIDs, IIDs for the corresponding data values. For clarity, here they are contained in the two files - `epihealth_hdl.pheno` and `epihealth_pcs.covar`. Although the suffices make them unable to directly be opened, you can view them easily in any text-editors or simply with the command lines learned in the previous session. Ideally, you should see the following in the phenotype file:
 ```tsv
-FID	    IID     hdl
+FID IID hdl
 HG00096	HG00096	.919065
 HG00097	HG00097	1.764018
 HG00099	HG00099	1.188449
