@@ -251,7 +251,7 @@ In an IVW meta-analysis, we combine results across studies using the effect size
 
 Once the meta-analysis is performed, we will also use the qqman R package to visualize the genome-wide results in a Manhattan plot and [LocusZoom](https://my.locuszoom.org/) to investigate a relavant region.
 
-**<ins>Creating a meta-analysis script for METAL</ins>**
+**<ins>A meta-analysis script for METAL</ins>**
 
 In order to run a meta-analysis, we need a METAL script file. METAL scripts are **simple text-based commands** that specify how to process GWAS summary statistics. They are **configuration files** for meta-analysis.
 
@@ -299,8 +299,50 @@ CLEAR
 ```
 
 Copy it to your working folder by `cp ${meta_loc}/metal_script.txt .` and open the text-editor `nano metal_script.txt` to edit the following parts:
-+ OUTFILE: change the output file prefix to either a new directory in your current one or remove "out/"
++ OUTFILE: change the output file prefix to either a new directory in your current one or remove "out/". The space between the name and file extension is not an error but mandatory.
 + the two PROCESSFILE: add `/crex/proj/uppmax2024-2-1/DATA_LAB/meta/` to make them the correct paths
 Hit "Ctrl O" to save and "Ctrl X" to close the file. 
+Then run METAL:
+```
+metal metal_script.txt
+```
 
+#### Question 1
+*Check the output log, how many markers did the meta-analysis complete? Which is the marker with the smallest p-value?*
 
+**<ins>Visualize the results</ins>**
+Load the R packages in Rackham and start R as you did in the last session; also, load the qqman R package.
+
+```R
+meta_result <- read.table("meta_hdl1.tbl", header=TRUE, sep="\t")
+```
+
+#### Question 2
+*Quickly inspect the loaded result, how many number of rows and columns are there? Does the number of rows match the number of markers scanned in the meta-analysis? What does the number of SNPs imply about the reference panel that was used for imputation?*
+
+Use `colnames(meta_result)` to inspect the column names. In different steps of the analyses or with different software, the column names of the same content, such as the marker IDs and p-values, can differ.
+#### Question 3
+*Which column should be look at for the p-values?*
+
+ Similar to what we did in the previous session, make the QQ plot for this meta-analysis.
+ #### Question 4
+ *Upload your QQ plot to the report. What conclusions does the QQ plot tell?*
+
+To make the Manhattan plot, we are stil missing the chromosome number and positions for the SNPs. We have a file called `chromosome_position.txt`, load and merge it with our meta-analysis results:
+
+```R
+pos_info <- read.table("/crex/proj/uppmax2024-2-1/DATA_LAB/meta/chromosome_position.txt", header=TRUE, sep="\t")
+merged_result <- merge(meta_result[, c(1,10)], pos_info, by="MarkerName", all.x=TRUE) # get Marker ID, chr number, position, p-values
+dim(merged_result)
+head(merged_result)
+```
+
+Use similar approach like in the previous session to make the Manhattan plot.
+
+#### Question 5
+*Upload your Manhattan plot to the report.*
+
+**<ins>Create a LocusZoom plot</ins>**
+In the previous session, we generated a regional plot using [LocusZoom](https://my.locuszoom.org/) for the region on Chr 16 containing the *CETP* gene. Now we are doing the same for the meta-analysis results.
+
+Before quitting R, 
