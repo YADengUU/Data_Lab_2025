@@ -1,5 +1,5 @@
 # Data Lab 2025
-There are 3 sessions of this data lab, jump to:
+The following covers the Genomics module of data lab for the course Molecular Techniques and Data Analysis in Precision Medicine II (3MG047 VT2025). There are 3 sessions here, jump to:
 - [Day 1](#day-1--introduction-to-plink-and-basic-qc)
 - [Day 2](#day-2---gwas-using-plink2)
 - [Day 3](#day-3---meta-analysis)
