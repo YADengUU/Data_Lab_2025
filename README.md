@@ -19,7 +19,7 @@ head ${data_loc}/epihealth.pvar | column -t
 
 > For sample (participant) information, check epihealth.psam; don’t do the same thing for epihealth.pgen, which is in compressed format and unreadable by humans.
 
-#### Question 1:
+#### <span style="color:#5F725C">Question 1:</span>
 *What is the chromosome number of SNPs in the dataset? In which column do you find this information?*
 #### Question 2: 
 *What is the marker ID (rs…) of the first SNP? What are the reference and alternative alleles?*
