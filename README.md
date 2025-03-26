@@ -5,13 +5,13 @@ There are 3 sessions of this data lab, jump to:
 - [Day 3](#day-3---meta-analysis)
 ## Day 1- Introduction to PLINK and basic QC
 Log into your UPPMAX Rackham account. The datasets for the lab are in the following directory on Rackham:
-`/crex/proj/uppmax2024-2-1/DATA_LAB/data`.
+`/crex/proj/uppmax2024-2-1/DATA_LAB/data`. Be sure **not to make changes to the files as well as contents**, everyone in the session needs to access the original contents.
 
 In the terminal window, use the command line
 ```
 data_loc="/crex/proj/uppmax2024-2-1/DATA_LAB/data"
 ```
-and you can then access with `${data_loc}/` as the shortcut.
+and you can then access with `${data_loc}/` in your personal directory as the shortcut.
 Do a quick check for the genetic variant information by
 ```
 head ${data_loc}/epihealth.pvar | column -t
@@ -19,8 +19,8 @@ head ${data_loc}/epihealth.pvar | column -t
 
 > For sample (participant) information, check epihealth.psam; don’t do the same thing for epihealth.pgen, which is in compressed format and unreadable by humans.
 
-#### <div style="background-color:#5F725C;color:white;padding:5px;">Question 1:</div>
-<span style="color:#5F725C"> *What is the chromosome number of SNPs in the dataset? In which column do you find this information?*</span>
+#### Question 1:
+*What is the chromosome number of SNPs in the dataset? In which column do you find this information?*
 #### Question 2: 
 *What is the marker ID (rs…) of the first SNP? What are the reference and alternative alleles?*
 
@@ -323,7 +323,7 @@ meta_result <- read.table("meta_hdl1.tbl", header=TRUE, sep="\t")
 
 Use `colnames(meta_result)` to inspect the column names. In different steps of the analyses or with different software, the column names of the same content, such as the marker IDs and p-values, can differ.
 #### Question 3
-*Which column should be look at for the p-values?*
+*Which column should be looked at for the p-values?*
 
  Similar to what we did in the previous session, make the QQ plot for this meta-analysis.
  #### Question 4
