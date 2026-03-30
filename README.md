@@ -2,6 +2,7 @@
 The following covers the first three sessions of Genomics module of data lab for the course Molecular Techniques and Data Analysis in Precision Medicine II (3MG047 MG047 VT2025/3MG047 MG047 VT2026). Jump to:
 - [Lab 1](#lab-1--introduction-to-plink-and-basic-qc)
 - [Lab 2](#lab-2---gwas-using-plink2)
+- [Lab 3 (optional)](#lab-3-optional---meta-analysis-of-gwas-results)
 ## Lab 1- Introduction to PLINK and basic QC
 Log into your UPPMAX Pelle account. 
 ```
@@ -239,3 +240,137 @@ Recall the PLINK2 command that you used to run association test, in `cols=...` w
 Within a locus, there may be several independent association signals, which can be identified by conditioning the association analysis for the lead SNP in the locus. Re-run the association analysis adjusting for the lead SNP by adding the `--condition` flag. See the [documentation of PLINK2's association tests](https://www.cog-genomics.org/plink/2.0/assoc#glm) for more details.
 
 *Show the command you used to re-run the test. Based on the position of the lead SNP, what is the range of positions ± 500kb around it? Is there any additional association signal in this region? A p-value cutoff of 1e-5 can be used for secondary signal in this example.*
+
+## Lab 3 (Optional) - Meta-analysis of GWAS results
+The effect size of SNPs associated with complex traits is typically very small, so the statistical power to detect a true association between an outcome and a SNP using GWAS is relatively low with data from a single study with a few thousand participants. To overcome this limitation, it is a common practice to combine GWAS results from multiple studies as a meta-analysis, which increases the sample size and improves the statistical power to find true associations.
+
+In this session, we will combine association results from two studies in a fixed-effect, inverse variance weighted (IVW) meta-analysis. We will use the software [METAL](https://genome.sph.umich.edu/wiki/METAL_Documentation). A nice tutorial with statistical explanations is also available on https://cloufield.github.io/GWASTutorial/11_meta_analysis/#metal. The data for this session arw available at: 
+```
+meta_loc="/crex/proj/uppmax2024-2-1/DATA_LAB_2026/meta"
+```
+
+As METAL is temporarily not found on Pelle, [Download the precompiled binaries of METAL](http://csg.sph.umich.edu/abecasis/Metal/download/) for Linux systems and then use `put` via `sftp` to upload it to your home folder on Pelle. Then unzip the .tar.gz file with:
+```
+tar xvzf Linux-metal.tar.gz
+```
+which shall generate a new folder called `generic-metal`. 
+
+With "fixed effects", we are assuming that the different studies included in this meta-analysis represent the same population, and the effect estimates vary little between the studies. If the effect sizes vary a lot between studies, i.e., heterogeneity, the fixed-effects assumption might be violated and a random effects model would be more appropriate. METAL supports the fixed-effect model.
+
+In an IVW meta-analysis, we combine results across studies using the effect size (BETA) and standard error (SE).
+
+Once the meta-analysis is performed, we will also use the qqman R package to visualize the genome-wide results in a Manhattan plot and [LocusZoom](https://my.locuszoom.org/) to investigate a relavant region.
+
+**<ins>A meta-analysis script for METAL</ins>**
+In order to run a meta-analysis, we need a METAL script file. METAL scripts are **simple text-based commands** that specify how to process GWAS summary statistics. They are **configuration files** for meta-analysis. You might notice that inside the folder, there is a textfile called `metal_script.txt`,  which is created to ensure our progress in this session.
+
+```
+# output file
+OUTFILE out/meta_hdl .tbl
+
+# Meta-analysis settings:
+GENOMICCONTROL OFF
+AVERAGEFREQ ON
+MINMAXFREQ ON
+USESTRAND ON
+SEPARATOR TAB
+SCHEME STDERR
+
+# These are the column names we expect in the input files:
+MARKER markername
+ALLELE effect_allele non_effect_allele
+PVALUE pvalue
+EFFECT beta
+STDERR se
+#WEIGHT n
+FREQ eaf
+STRAND strand
+#MAXWARNING 50
+#CUSTOMVARIABLE N_TOTAL LABEL SAMPLESIZE AS N_TOTAL
+
+#ADDFILTER MAC > 3
+
+# Input files:
+PROCESSFILE study1_assoc_results.txt
+PROCESSFILE study2_assoc_results.txt
+
+ANALYZE HETEROGENEITY
+CLEAR
+```
+
+Copy it to your working folder by `cp ${meta_loc}/metal_script.txt .` and open the text-editor `nano metal_script.txt` to edit the following parts:
++ OUTFILE: change the output file prefix to either a new directory in your current one or remove "out/". The space between the name and file extension is not an error but mandatory.
++ the two PROCESSFILE: add `/crex/proj/uppmax2024-2-1/DATA_LAB_2026/meta/` to make them the correct paths
+Hit "Ctrl O" to save and "Ctrl X" to close the file. 
+Then to run METAL, it needs to be specified with the path where your uncompressed tar.gz file ended up. For example, if you are working in your home directory, the execuatable file shall be `./generic-metal/metal`, therefore the analysis can be done by:
+```
+./generic-metal/metal metal_script.txt
+```
+which would take a few minutes.
+
+#### Question 1
+*Check the output log, how many markers did the meta-analysis complete? Which is the marker with the smallest p-value?*
+**<ins>Visualize the results</ins>**
+
+Load the R packages  and start R as you did in the last session; also, load the qqman R package.
+
+```R
+meta_result <- read.table("meta_hdl1.tbl", header=TRUE, sep="\t")
+```
+
+#### Question 2
+*Quickly inspect the loaded result, how many number of rows and columns are there? Does the number of rows match the number of markers scanned in the meta-analysis? What does the number of SNPs imply about the reference panel that was used for imputation?*
+
+Use `colnames(meta_result)` to inspect the column names. In different steps of the analyses or with different software, the column names of the same content, such as the marker IDs and p-values, can differ.
+#### Question 3
+*Which column should be looked at for the p-values?*
+
+ Similar to what we did in the previous session, make the QQ plot for this meta-analysis.
+ #### Question 4
+ *Upload your QQ plot to the report. What conclusions does the QQ plot tell?*
+
+To make the Manhattan plot, we are stil missing the chromosome number and positions for the SNPs. We have a file called `chromosome_position.txt`, load and merge it with our meta-analysis results:
+
+```R
+pos_info <- read.table("/crex/proj/uppmax2024-2-1/DATA_LAB/meta/chromosome_position.txt", header=TRUE, sep="\t")
+merged_result <- merge(meta_result, pos_info, by="MarkerName", all.x=TRUE)
+dim(merged_result)
+head(merged_result)
+```
+
+Use similar approach like in the previous session to make the Manhattan plot.
+
+#### Question 5
+*Upload your Manhattan plot to the report.*
+
+**<ins>Create a LocusZoom plot</ins>**
+
+In the previous session, we generated a regional plot using [LocusZoom](https://my.locuszoom.org/) for the region on Chr 16 containing the *CETP* gene. Now we are doing the same for the meta-analysis results.
+
+To save time for the data lab, instead of uploading the full meta-analysis file, we will use R to extract the data from the merged result, `merged_result`, for the region that we want to investigate, i.e., **CHR=16 and BP > 56,900,000 and < 57,100,000**.
+
+>Use which() to select the rows of data matching the criteria. For example, `extracted <- merged_result[which(merged_result$chr==16),]`. The "and" and "or" operators in R are `&` and `|`, respectively.
+
+Also, LocusZoom needs marker IDs to be in the format chr:pos, make a new column combining these information. For example:
+
+```R
+ID_chr_pos <- paste(df$chromosome, df$position, sep=":")
+df <- cbind(df, ID_chr_pos)
+```
+
+Replace `df` with the actual name of your extracted dataframe, and the same for the column names of chromosome number and position. 
+
+Order the rows by the position, then write it out into a .txt file and download to your local computer.
+
+#### Question 6
+*Use LocusZoom to make the regional plot for the top SNP and upload it to the report.*
+
+#### Question 7
+Compare the result of the single study (Day 2) and the meta-analyses today, such as by checking the p-values in the output or quickly look at the plots.
+*Do you see any difference in the significance? What would you conclude for the CETP gene and its association with HDL levels?*
+
+#### Extra exercise
+At the homepage of LocusZoom, you can also create plots with publically available data, such as by searching "HDL". Generate plots for the *CETP* region using data from the large-scale meta-analysis of GWAS, and with the largest exome sequencing result sets for HDL.
+
+*Have a quick look at the regional plot: do the combined results agree with the lab's results regarding which gene is likely causal?*
+
