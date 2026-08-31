@@ -9,11 +9,11 @@ Log into your UPPMAX Pelle account.
 ssh username@pelle.uppmax.uu.se
 ```
 The datasets for the lab are in the following directory on Pelle:
-`/crex/proj/uppmax2024-2-1/DATA_LAB_2026/data`. Be sure **not to make changes to the files as well as contents**, everyone in the session needs to access the original contents, so stay in your own login folder to work on the tasks.
+`/gorilla/proj/uppmax2024-2-1/uppmax2024-2-1/DATA_LAB_2026/data`. Be sure **not to make changes to the files as well as contents**, everyone in the session needs to access the original contents, so **stay in your own login folder to work on the tasks** - Don't `cd` to the course data directory.
 
 In the terminal window, use the command line
 ```
-data_loc="/crex/proj/uppmax2024-2-1/DATA_LAB_2026/data"
+data_loc="/gorilla/proj/uppmax2024-2-1/uppmax2024-2-1/DATA_LAB_2026/data"
 ```
 and you can then access with `${data_loc}/` in your personal directory as the shortcut.
 Do a quick check for the genetic variant information by
